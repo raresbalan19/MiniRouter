@@ -205,6 +205,11 @@ class FullNM(object):
             err = info.get("err_file", i)
             rtable = info.get("rtable", i)
             rname = "router{}".format(i)
+            router.cmd("ln -s build/router {}".format(rname))
+            if not len(router.cmd("pgrep {}".format(rname))):
+                cmd = "./{} {} {} > {} 2> {} &".format(rname, rtable, ifaces,
+                                                       out, err)
+                router.cmd(cmd)
 
             if int(router.cmd("ps -aux | grep {} | wc -l".format(rname))) == 1:
                 cmd = 'bash -c "exec -a {} ./router {} {} > {} 2> {} &"'.format(rname, rtable, ifaces,
