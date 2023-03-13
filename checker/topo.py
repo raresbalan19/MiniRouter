@@ -29,7 +29,7 @@ def signal_handler(signal, frame):
 
 
 def static_arp():
-    srcp = os.path.join("", info.ARP_TABLE)
+    srcp = os.path.join("src", info.ARP_TABLE)
     return path.exists(srcp)
 
 
