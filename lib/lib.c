@@ -41,14 +41,14 @@ int get_sock(const char *if_name)
 	return s;
 }
 
-int send_to_link(int intidx, char *frame_data, size_t len)
+int send_to_link(int intidx, char *frame_data, size_t length)
 {
 	/*
 	 * Note that "buffer" should be at least the MTU size of the 
 	 * interface, eg 1500 bytes 
 	 */
 	int ret;
-	ret = write(interfaces[intidx], frame_data, len);
+	ret = write(interfaces[intidx], frame_data, length);
 	DIE(ret == -1, "write");
 	return ret;
 }
@@ -82,7 +82,8 @@ int recv_from_any_link(char *frame_data, size_t *length) {
 			FD_SET(interfaces[i], &set);
 		}
 
-		res = select(interfaces[ROUTER_NUM_INTERFACES - 1] + 1, &set, NULL, NULL, NULL);
+		res = select(interfaces[ROUTER_NUM_INTERFACES - 1] + 1, &set,
+				NULL, NULL, NULL);
 		DIE(res == -1, "select");
 
 		for (int i = 0; i < ROUTER_NUM_INTERFACES; i++) {
@@ -178,15 +179,15 @@ void init(int argc, char *argv[])
 }
 
 
-uint16_t checksum(uint16_t *data, size_t len)
+uint16_t checksum(uint16_t *data, size_t length)
 {
 	unsigned long checksum = 0;
 	uint16_t extra_byte;
-	while (len > 1) {
+	while (length > 1) {
 		checksum += ntohs(*data++);
-		len -= 2;
+		length -= 2;
 	}
-	if (len) {
+	if (length) {
 		*(uint8_t *)&extra_byte = *(uint8_t *)data;
 		checksum += extra_byte;
 	}
@@ -225,7 +226,7 @@ int read_rtable(const char *path, struct route_table_entry *rtable)
 	return j;
 }
 
-int parse_arp_table(char *path, struct arp_entry *arp_table)
+int parse_arp_table(char *path, struct arp_table_entry *arp_table)
 {
 	FILE *f;
 	fprintf(stderr, "Parsing ARP table\n");

@@ -9,6 +9,16 @@
 #define MAX_PACKET_LEN 1600
 #define ROUTER_NUM_INTERFACES 3
 
+
+/*
+ * @brief Sends a packet on a specific interface.
+ *
+ * @param interface - index of the output interface
+ * @param frame_data - region of memory in which the data will be copied; should
+ *        have at least MAX_PACKET_LEN bytes allocated
+ * @param length - will be set to the total number of bytes received.
+ * Returns: the interface it has been received from.
+ */
 int send_to_link(int interface, char *frame_data, size_t length);
 
 /*
@@ -31,7 +41,7 @@ struct route_table_entry {
 } __attribute__((packed));
 
 /* ARP table entry when skipping the ARP exercise */
-struct arp_entry {
+struct arp_table_entry {
     uint32_t ip;
     uint8_t mac[6];
 };
@@ -62,9 +72,9 @@ void get_interface_mac(int interface, uint8_t *mac);
  * of an ICMP header we must set the checksum to 0 beforehand.
 
  * @param data memory area to checksum
- * @param size in bytes
+ * @param length in bytes
  */
-uint16_t checksum(uint16_t *data, size_t len);
+uint16_t checksum(uint16_t *data, size_t length);
 
 /**
  * hwaddr_aton - Convert ASCII string to MAC address (colon-delimited format)
@@ -84,7 +94,7 @@ int read_rtable(const char *path, struct route_table_entry *rtable);
  * arp_table should be allocated and have enough space. This
  * function returns the size of the arp table.
  * */
-int parse_arp_table(char *path, struct arp_entry *arp_table);
+int parse_arp_table(char *path, struct arp_table_entry *arp_table);
 
 void init(int argc, char *argv[]);
 
