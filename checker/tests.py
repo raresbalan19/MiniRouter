@@ -73,10 +73,21 @@ def valid_arp_reply(host, packet, addr_s, addr_d):
 
 
 def valid_arp_reply_from_router(host, router, packet):
+    if ARP not in packet:
+        return False
+
+    a = packet[ARP]
+
+    if not a.get_field("op").i2repr(a, a.op) == "is-at":
+        return False
+
     src = info.get("router_mac", router, host)
     dst = info.get("host_mac", host)
-    return valid_arp_reply(host, packet, src, dst)
 
+    if a[ARP].hwdst != dst:
+        return False
+
+    return True
 
 def valid_arp_reply_to_router(host, router, packet):
     src = info.get("host_mac", host)
