@@ -24,7 +24,7 @@ $(BINARY): $(OBJECTS)
 	$(CC) $(INCFLAGS) $(CFLAGS) -fPIC $< -o $@
 
 clean:
-	rm -rf $(BUILDDIR) $(DEPDIR) router* hosts_output $(PROJECT)
+	rm -rf $(OBJECTS) router hosts_output router_*
 
 run_router0: all
 	./router rtable0.txt rr-0-1 r-0 r-1
