@@ -1,0 +1,12 @@
+    Am rezolvat procesul de dirijare si longest prefix match eficient.
+
+    Inainte de main am cateva functii care ma vor ajuta mai apoi cu implementarea. Prima functie este get_best_route pe care am facut-o cu 
+cautare binara si m-am inspirat de pe site ul GeeksforGeeks: Binary Search - Data Structure and Algorithm Tutorials. Aceasta functie face longest 
+prefix match utilizand cautarea binara in loc de cea liniara. Mai am inca doua functii in care una imi ia intrarea arp care are adresa ip egala cu 
+un ip dat ca parametru al functiei si ultima o voi folosi pentru a compara 2 intrari in tabela de intrare, mai intai crescator dupa prefix si daca 
+2 prefixe sunt egale, vor fi ordonate descrescator dupa masca.
+    In main apelez qsort despre care m-am documentat de pe site-ul cu numele tutorialspoint pentru a avea ordonata tabela de routare. In while verific daca 
+pachetul primit este IPV4. Daca este, verific daca routerul este destinatia. Daca nu este, continui prin a verifica checksum-ul. Daca nu imi da eroare, voi face 
+get_best_route pentru a vedea unde ar trebui sa trimit pachetul in continuare. Verific TTL-ul si il acutalizez. Recalculez checksum-ul si dupa apelez get_arp_entry 
+de next-hop din cea mai buna ruta pentru a pune noua adresa destinatie ca fiind adresa MAC a urmatorului hop care se gaseste in structura de arp_entry. Pun ca adresa 
+sursa interfata mac curenta si dupa trimit pachetul mai departe.
